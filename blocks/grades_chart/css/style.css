@@ -1,0 +1,15 @@
+.title-gradeschart{
+    padding-top: 30px;
+    margin: 0 auto;
+    width: 500px;
+    height: auto;
+}
+th,td {
+ text-align: center;
+}
+.fa-check{
+	color: blue;
+}
+.fa-times{
+	color: red;
+}
