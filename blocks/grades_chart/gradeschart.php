@@ -6,6 +6,10 @@ require("lib.php");
 
 $courseId = $_GET['courseId'];
 
+$studentId = $_GET['studentId'];
+
+// die($studentId);
+
 $query = "SELECT id, u.firstname, u.lastname 
           FROM {user} u
           WHERE u.id <> 1 AND u.password <> 'restored' 
@@ -13,31 +17,24 @@ $query = "SELECT id, u.firstname, u.lastname
 
 $res = $DB->get_records_sql($query);
 
+$query1 = "SELECT q.name, qg.grade
+FROM {quiz} q
+LEFT JOIN {quiz_grades} qg ON qg.quiz = q.id
+WHERE q.course = $courseId
+ORDER BY q.id";
 
+$quiz = $DB->get_records_sql($query1);
+
+$aQuiz = block_grades_chart_convert_to_array($quiz);
+    
 
 //$arrUser = block_grades_chart_get_users_array($res);
 
-//echo "<pre>";
-//print_r($res);die;
+echo "<pre>";
+print_r($aQuiz);die;
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/font-awesome.css">
-    <link rel="icon" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-    <style>
-        .chart-container {
-            width: 640px;
-            height: auto;
-        }
-    </style>
-</head>
-<body>
+<?php include('inc/header.php') ?>
     <div class="container">
         <div class="header">
             <div class="title-gradeschart">
@@ -53,7 +50,29 @@ $res = $DB->get_records_sql($query);
                     <?php }?>
                 </select>
             </div>
-            <button type="button" onclick="myClick($('#student').val(), <?php echo $courseId; ?>);" class="btn btn-primary" style="margin-left: 40%; width: 200px; margin-top: 10px;">Xác nhận</button>
+            <p style="margin: 0 auto; width: 500px; padding-top: 10px;">
+                <?php for ($i=0; $i < 5; $i++) { ?>
+                    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapse[<?php echo $i; ?>]">
+                        Chuẩn <?php echo $i+1; ?>
+                    </button>
+                <?php } ?>
+            </p>
+            <?php for ($i=0; $i < 5; $i++) { ?>
+            <div class="collapse" id="collapse[<?php echo $i; ?>]" style="padding-top: 10px; margin: 0 auto; width: 500px;">
+                <div class="card card-body">
+                    <h4>Chuẩn <?php echo $i+1; ?></h4>
+                    <?php foreach ($aQuiz as $key => $value) { ?>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="stand[<?php echo $i+1; ?>]-value[<?php echo $key; ?>]" id="stand[<?php echo $i+1; ?>]-value[<?php echo $key; ?>]">
+                      <label class="form-check-label" for="stand[<?php echo $i+1; ?>]-value[<?php echo $key; ?>]">
+                         <?php echo $value->{'name'}; ?>
+                      </label>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+            <?php } ?>
+            <button type="button" onclick="myClick($('#student').val(), <?php echo $courseId; ?>);" class="btn btn-danger" style="margin-left: 40%; width: 200px; margin-top: 10px;">Xác nhận</button>
         </div>
     </div>
 <div class="chart-container" style="display: none; margin: 0 auto; padding-top: 50px;">
@@ -75,7 +94,7 @@ $res = $DB->get_records_sql($query);
                 var aGrade = [];
 
                 for (var i = 0; i < obj.length; i++) {
-                    aGrade.push((obj[i].rawgrade * 10).toFixed(2)); 
+                    aGrade.push((obj[i].grade * 10).toFixed(2)); 
                 }
 
                 console.log(aGrade);
@@ -88,7 +107,6 @@ $res = $DB->get_records_sql($query);
                             data: aGrade,
                             backgroundColor: 'rgb(255, 255, 132, 0.3)',
                             borderColor: 'rgb(255, 99, 132)',
-                            
                         }
                     ]
                 };
@@ -103,12 +121,7 @@ $res = $DB->get_records_sql($query);
                 });
             }
         });
+
     }
 </script>
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/Chart.min.js"></script>
-<script src="js/style.js"></script>
-
-
-</body>
-</html>
+<?php include('inc/footer.php') ?>

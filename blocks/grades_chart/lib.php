@@ -7,7 +7,7 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-function block_grades_chart_get_users_array($user){
+function block_grades_chart_convert_to_array($user){
     $result = array();
     if($user){
         foreach ($user as $key => $value){

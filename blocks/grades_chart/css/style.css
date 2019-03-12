@@ -13,3 +13,7 @@ th,td {
 .fa-times{
 	color: red;
 }
+.chart-container {
+    width: 640px;
+    height: auto;
+}

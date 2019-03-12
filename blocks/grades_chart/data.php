@@ -27,18 +27,18 @@ $courseId = $_GET['courseId'];
 //echo "<pre>";
 //print_r($res);die;
 
-$sql = "SELECT gg.id, gg.userid, gg.usermodified, gg.rawgrade, gg.finalgrade, u.firstname, u.lastname
+$sql = "SELECT qg.grade, qg.quiz, qg.userid, u.firstname, u.lastname
 			FROM {user} u
-            LEFT JOIN {grade_grades} gg ON u.id = gg.userid
-            WHERE  gg.rawgrade <> 0 AND gg.userid = $studentId
-            ORDER BY gg.userid ASC";
+            LEFT JOIN {quiz_grades} qg ON u.id = qg.userid
+            WHERE  qg.grade <> 0 AND qg.userid = $studentId
+            ORDER BY qg.userid ASC";
 
 $result = $DB->get_records_sql($sql);
 
-$arrayRes = block_grades_chart_get_users_array($result);
+$arrayRes = block_grades_chart_convert_to_array($result);
 
 $gradeJson = json_encode($arrayRes,true);
-    
+
 print $gradeJson;
 
 // echo "<pre>";

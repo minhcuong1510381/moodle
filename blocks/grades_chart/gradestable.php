@@ -12,18 +12,7 @@ $query = "SELECT id, u.firstname, u.lastname
 $res = $DB->get_records_sql($query);
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="css/font-awesome.css"> -->
-    <link rel="stylesheet" href="css/style.css">
-
-</head>
-<body>
+<?php include('inc/header.php') ?>
     <div class="container">
         <div class="header">
             <div class="title-gradeschart">
@@ -73,10 +62,4 @@ $res = $DB->get_records_sql($query);
         </div>
     </div>
 
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/Chart.min.js"></script>
-<script src="js/style.js"></script>
-
-
-</body>
-</html>
+<?php include('inc/footer.php') ?>
