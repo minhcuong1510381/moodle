@@ -29,20 +29,19 @@ $res = $DB->get_records_sql($query);
             <div class="title-gradeschart">
                 <h3>Đánh giá chi tiết môn học</h3>
             </div>
-            <form action="gradestable.php" method="post" style="margin: 0 auto; width: 500px;">
-            	<div class="form-group choose-student" >
-	                <label>Chọn sinh viên: </label>
-	                <select class="form-control" id="student">
-	                    <?php foreach ($res as $key => $value) { ?>
-	                        <option value="<?php echo $key; ?>">
-	                            <?php echo $value->{'firstname'}." ".$value->{'lastname'}; ?>
-	                        </option>
-	                    <?php }?>
-	                </select>
-	            </div>
-	            <button type="button" class="btn btn-primary" style="margin-left: 30%; width: 200px;">Xác nhận</button>
-            </form>
-        </div>
+            <div class="form-group choose-student" style="margin: 0 auto; width: 500px;">
+               <label>Chọn sinh viên: </label>
+               <select class="form-control" id="student">
+                   <?php foreach ($res as $key => $value) { ?>
+                       <option value="<?php echo $key; ?>">
+                           <?php echo $value->{'firstname'}." ".$value->{'lastname'}; ?>
+                       </option>
+                   <?php }?>
+               </select>
+               <button type="button" class="btn btn-primary" style="margin-left: 30%; width: 200px; margin-top: 10px;">Xác nhận</button>
+           </div>
+
+       </div>
         <div class="content" style="margin-top: 10px;">
         	<table class="table table-bordered">
         		<thead>
@@ -57,17 +56,17 @@ $res = $DB->get_records_sql($query);
         		<tbody>
         			<tr>
         				<td>Q1</td>
-        				<td><i class="fa fa-check"></i></td>
-        				<td><i class="fa fa-times"></i></td>
-        				<td><i class="fa fa-check"></i></td>
-        				<td><i class="fa fa-check"></i></td>
+        				<td><a href="javascript:void(0);"><i class="fa fa-check"></i></a></td>
+        				<td><a href="javascript:void(0);"><i class="fa fa-times"></i></a></td>
+        				<td><a href="javascript:void(0);"><i class="fa fa-check"></i></a></td>
+        				<td><a href="javascript:void(0);"><i class="fa fa-check"></i></a></td>
         			</tr>
         			<tr>
         				<td>Q2</td>
-        				<td><i class="fa fa-times"></i></td>
-        				<td><i class="fa fa-check"></i></td>
-        				<td><i class="fa fa-times"></i></td>
-        				<td><i class="fa fa-check"></i></td>
+        				<td><a href="javascript:void(0);"><i class="fa fa-times"></i></a></td>
+        				<td><a href="javascript:void(0);"><i class="fa fa-check"></i></a></td>
+        				<td><a href="javascript:void(0);"><i class="fa fa-times"></i></a></td>
+        				<td><a href="javascript:void(0);"><i class="fa fa-check"></i></a></td>
         			</tr>
         		</tbody>
         	</table>

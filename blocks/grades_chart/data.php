@@ -1,7 +1,15 @@
 <?php
+
+header('Content-Type: application/json');
+
 require_once("../../config.php");
 require_once($CFG->dirroot.'/lib/moodlelib.php');
 global $DB;
+require("lib.php");
+
+$studentId = $_GET['studentId'];
+
+$courseId = $_GET['courseId'];
 
 //$sql = "SELECT gi.id, categoryid, fullname, itemname, gradetype, grademax, grademin
 //            FROM {grade_categories} gc
@@ -19,14 +27,19 @@ global $DB;
 //echo "<pre>";
 //print_r($res);die;
 
-$sql = "SELECT id, userid, usermodified, rawgrade, finalgrade
-            FROM {grade_grades} gg
-            WHERE  rawgrade <> 0
-            ORDER BY userid ASC";
+$sql = "SELECT gg.id, gg.userid, gg.usermodified, gg.rawgrade, gg.finalgrade, u.firstname, u.lastname
+			FROM {user} u
+            LEFT JOIN {grade_grades} gg ON u.id = gg.userid
+            WHERE  gg.rawgrade <> 0 AND gg.userid = $studentId
+            ORDER BY gg.userid ASC";
 
 $result = $DB->get_records_sql($sql);
 
-$gradeJson = json_encode($result,true);
+$arrayRes = block_grades_chart_get_users_array($result);
 
-echo "<pre>";
-print_r($result);die;
+$gradeJson = json_encode($arrayRes,true);
+    
+print $gradeJson;
+
+// echo "<pre>";
+// print_r($result);die;
