@@ -1,45 +1,57 @@
-<?php
-
-header('Content-Type: application/json');
-
+<?php 
 require_once("../../config.php");
 require_once($CFG->dirroot.'/lib/moodlelib.php');
 global $DB;
 require("lib.php");
 
-$studentId = $_GET['studentId'];
+$courseId = $_POST['courseId'];
+$studentId = $_POST['studentId'];
 
-$courseId = $_GET['courseId'];
+$sqlUser = "SELECT firstname, lastname, id
+			FROM {user}
+			WHERE id = $studentId";
+$user = $DB->get_record_sql($sqlUser);
 
-//$sql = "SELECT gi.id, categoryid, fullname, itemname, gradetype, grademax, grademin
-//            FROM {grade_categories} gc
-//            LEFT JOIN {grade_items} gi ON gc.courseid = gi.courseid AND gc.id = gi.categoryid
-//            WHERE gc.courseid = ? AND categoryid IS NOT NULL AND EXISTS (
-//                SELECT *
-//                    FROM {grade_grades} gg
-//                    WHERE gg.itemid = gi.id AND gg.rawgrade IS NOT NULL )
-//        ORDER BY fullname, itemname";
-//
-//$courseId = $_GET['courseId'];
-//
-//$res = $DB->get_records_sql($sql, array($courseId));
-//
-//echo "<pre>";
-//print_r($res);die;
+$sqlCourseSection = "SELECT name, sequence
+						FROM {course_sections}
+						WHERE name IS NOT NULL 
+						ORDER BY id";
 
-$sql = "SELECT qg.grade, qg.quiz, qg.userid, u.firstname, u.lastname
-			FROM {user} u
-            LEFT JOIN {quiz_grades} qg ON u.id = qg.userid
-            WHERE  qg.grade <> 0 AND qg.userid = $studentId
-            ORDER BY qg.userid ASC";
+$courseSections = $DB->get_records_sql($sqlCourseSection);
 
-$result = $DB->get_records_sql($sql);
+$courseSections = block_grades_chart_convert_to_array($courseSections);
 
-$arrayRes = block_grades_chart_convert_to_array($result);
+$arrQuiz = [];
 
-$gradeJson = json_encode($arrayRes,true);
+$a = $courseSections[0]->{'sequence'};
 
-print $gradeJson;
+foreach ($courseSections as $key => $value) {
+	$temp = $courseSections[$key]->{'sequence'};
 
-// echo "<pre>";
-// print_r($result);die;
+	$sqlQuiz = "SELECT cm.id, cm.instance, qg.grade
+			FROM {course_modules} cm
+			LEFT JOIN {quiz_grades} qg ON qg.quiz = cm.instance
+			WHERE cm.id IN ($temp) AND cm.module = 16 AND cm.course = $courseId AND qg.userid = $studentId";
+
+	$a = $DB->get_records_sql($sqlQuiz);
+
+	$arrQuiz[] = block_grades_chart_convert_to_array($a)+["name" => $value->{'name'}];
+}
+
+$arrRes = [];
+
+foreach ($arrQuiz as $row) {
+	$sum = 0;
+	$ave = 0;
+	for ($i=0; $i < count($row) - 1; $i++) { 
+		$sum += $row[$i]->{'grade'};
+	}
+	$ave = round($sum/(count($row)-1),1);
+
+	$arrRes[] = ["average" => $ave, "name" => $row['name'], "user" => $user->{'firstname'}." ".$user->{'lastname'}, "userId" => $user->{'id'}];
+}
+
+print json_encode($arrRes);
+
+// print_r($arrRes);
+?>

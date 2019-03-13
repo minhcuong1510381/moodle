@@ -26,26 +26,46 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
-    'block/grades_chart:myaddinstance' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
+    'block/grades_chart:bemonitored' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_BLOCK,
         'archetypes' => array(
-            'user' => CAP_ALLOW
-        ),
-
-        'clonepermissionsfrom' => 'moodle/my:manageblocks'
+            'student' => CAP_ALLOW,
+        )
+    ),
+    'block/grades_chart:viewpages' => array(
+        'riskbitmask' => RISK_SPAM,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'guest' => CAP_PREVENT,
+            'student' => CAP_PREVENT,
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        )
     ),
 
     'block/grades_chart:addinstance' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
-
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
         'archetypes' => array(
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         ),
-
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
+    ),
+
+    'block/grades_chart:myaddinstance' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+    'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
 );
