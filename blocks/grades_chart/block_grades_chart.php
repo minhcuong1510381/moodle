@@ -35,6 +35,8 @@ class block_grades_chart extends block_base {
         $this->content->text   .= '<li><a href="'.$tableURL.'" target="_blank">Grades Table</a></li>';
         $this->content->text   .= '<li><a href="'.$reviewCourseURL.'" target="_blank">Bar Chart</a></li>';
 
+        $this->content->footer = '<hr/>';
+
         return $this->content;
     }
 }

@@ -18,7 +18,7 @@ $res = $DB->get_records_sql($query);
 
 ?>
 <?php include('inc/header.php') ?>
-    <div class="container">
+    <div class="container" style="height: 700px;">
         <div class="header">
             <div class="title-gradeschart">
                 <h3>Biểu đồ đánh giá năng lực sinh viên</h3>
@@ -38,39 +38,19 @@ $res = $DB->get_records_sql($query);
                 <button id="submit" type="submit" class="btn btn-danger" style="margin-left: 40%; width: 200px; margin-top: 10px;">Xác nhận</button>
             </form>  
         </div>
+    
+        <div class="chart-container" style="display: none;">
+            <canvas id="mycanvas"></canvas>
+        </div>
+        <div class="table-container" style="display: none; padding-top: 20px; margin: 0 auto; width: 500px;">
+        </div>
+        <div class="detail" style="display:none; margin: 0 auto; width: 100px; padding-top: 10px;">
+            <button type="button" id="detail" class="btn btn-primary">Chi tiết</button>
+        </div>
+        <div class="graph" style="display:none; margin: 0 auto; width: 100px;">
+            <button type="button" id="graph" class="btn btn-success">Đồ thị</button>
+        </div>
     </div>
-<div class="chart-container" style="display: none;">
-    <canvas id="mycanvas"></canvas>
-</div>
-<div class="table-container" style="display: none; padding-top: 20px; margin: 0 auto; width: 500px;">
-    <!-- <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th colspan="3">Tên Sinh Viên</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th>Tên chương</th>
-                <th>ĐTB</th>
-                <th>Đánh giá</th>
-            </tr>
-
-            <tr>
-                <td width="60%">Phân Tích</td>
-                <td width="20%">9.5</td>
-                <td width="20%"><i class="fa fa-check"></i></td>
-            </tr>
-
-        </tbody>
-    </table> -->
-</div>
-<div class="detail" style="display:none; margin: 0 auto; width: 100px; padding-top: 10px;">
-    <button type="button" id="detail" class="btn btn-primary">Chi tiết</button>
-</div>
-<div class="graph" style="display:none; margin: 0 auto; width: 100px; padding-top: 10px;">
-    <button type="button" id="graph" class="btn btn-success">Đồ thị</button>
-</div>
 
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -96,10 +76,12 @@ $res = $DB->get_records_sql($query);
                     var obj = JSON.parse(data);
                     var vertex = [];
                     var score = [];
+                    var ave = [];
 
                     for (var i in obj){
                         vertex.push(obj[i].name);
                         score.push(obj[i].average);
+                        ave.push(5);
                     }
 
                     var options = {
@@ -124,6 +106,15 @@ $res = $DB->get_records_sql($query);
                                 pointHoverBorderColor: 'rgb(54, 162, 235)',
                                 data: score,
                                 fill: true,
+                            },
+                            {
+                                label: "Trung bình",
+                                borderColor: 'rgb(255, 0, 0)',
+                                backgroundColor: 'rgba(255, 255, 255, 0)',
+                                borderWidth: '1',
+                                pointStyle: 'cross',
+                                data: ave,
+                                fill: true,
                             }
                         ]
                     };
@@ -145,6 +136,8 @@ $res = $DB->get_records_sql($query);
                         $('.table-container').css("display", "block");
                         $('.detail').css("display", "none");
                         $('.graph').css("display", "block");
+
+                        var sum = 0;
 
                         var table = document.createElement("table");
                         table.setAttribute("class","table table-bordered");
@@ -174,7 +167,7 @@ $res = $DB->get_records_sql($query);
                             if(i == 1){
                                 thBody.innerHTML = "Chương";
                             }else if(i==2){
-                                thBody.innerHTML = "ĐTB";
+                                thBody.innerHTML = "ĐTB chương";
                             }else{
                                 thBody.innerHTML = "Đánh giá";
                             }
@@ -202,8 +195,27 @@ $res = $DB->get_records_sql($query);
                             }else{
                                 tdBody3.innerHTML = '<i class="fa fa-times"></i>';
                             }
+                            sum += parseFloat(tdBody2.innerHTML);
                         }
 
+                        var trBody2 = document.createElement("tr");
+                        tbody.appendChild(trBody2);
+
+                        var thBody2 = document.createElement("th");
+                        trBody2.appendChild(thBody2);
+                        thBody2.innerHTML = "Trung bình khóa học: ";
+
+                        var tdBody4 = document.createElement("td");
+                        trBody2.appendChild(tdBody4);
+                        tdBody4.innerHTML = (sum/obj.length).toFixed(1);
+
+                        var tdBody5 = document.createElement("td");
+                        trBody2.appendChild(tdBody5);
+                        if(tdBody4.innerHTML >= 5){
+                            tdBody5.innerHTML = '<i class="fa fa-check"></i>';
+                        }else{
+                            tdBody5.innerHTML = '<i class="fa fa-times"></i>';
+                        }
                         console.log(obj.length);
 
                     });
