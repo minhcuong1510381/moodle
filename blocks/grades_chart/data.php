@@ -43,51 +43,67 @@ foreach ($courseSections as $key => $value) {
 
 	$a = $DB->get_records_sql($sqlQuiz);
 
-	$arrQuiz[] = block_grades_chart_convert_to_array($a)+["name" => $value->{'name'}];
+	if($a){
+        $arrQuiz[] = block_grades_chart_convert_to_array($a)+["name" => $value->{'name'}];
 
-	if($studentIdCompare){
-		$sqlQuizCp = "SELECT cm.id, cm.instance, qg.grade
+        if($studentIdCompare){
+            $sqlQuizCp = "SELECT cm.id, cm.instance, qg.grade
 				FROM {course_modules} cm
 				LEFT JOIN {quiz_grades} qg ON qg.quiz = cm.instance
 				WHERE cm.id IN ($temp) AND cm.module = 16 AND cm.course = $courseId AND qg.userid = $studentIdCompare";
-		$b = $DB->get_records_sql($sqlQuizCp);
-
-		$arrQuizCp[] = block_grades_chart_convert_to_array($b)+["name" => $value->{'name'}];
-	}
+            $b = $DB->get_records_sql($sqlQuizCp);
+            if($b){
+                $arrQuizCp[] = block_grades_chart_convert_to_array($b)+["name" => $value->{'name'}];
+            }
+        }
+    }
 }
 
-$arrRes = [];
+//echo "<pre>";
+//print_r($arrQuiz);
+//die;
 
-foreach ($arrQuiz as $row) {
-	$sum = 0;
-	$ave = 0;
-	for ($i=0; $i < count($row) - 1; $i++) { 
-		$sum += $row[$i]->{'grade'};
-	}
-	$ave = round($sum/(count($row)-1),1);
+if($arrQuiz){
+    $arrRes = [];
 
-	$arrRes[] = ["average" => $ave, "name" => $row['name'], "user" => $user->{'firstname'}." ".$user->{'lastname'}, "userId" => $user->{'id'}];
-}
+    foreach ($arrQuiz as $row) {
+        $sum = 0;
+        $ave = 0;
+        for ($i=0; $i < count($row) - 1; $i++) {
+            $sum += $row[$i]->{'grade'};
+        }
+        $ave = round($sum/(count($row)-1),1);
 
-if($studentIdCompare){
-	$arrResCp = [];
+        $arrRes[] = ["average" => $ave, "name" => $row['name'], "user" => $user->{'firstname'}." ".$user->{'lastname'}, "userId" => $user->{'id'}];
+    }
 
-	foreach ($arrQuizCp as $row) {
-		$sum = 0;
-		$ave = 0;
-		for ($i=0; $i < count($row) - 1; $i++) { 
-			$sum += $row[$i]->{'grade'};
-		}
-		$ave = round($sum/(count($row)-1),1);
+    if($studentIdCompare){
+        if($arrQuizCp){
+            $arrResCp = [];
 
-		$arrResCp[] = ["average" => $ave, "name" => $row['name'], "user" => $userCp->{'firstname'}." ".$userCp->{'lastname'}, "userId" => $userCp->{'id'}];
-	}
-	print json_encode(array($arrRes, $arrResCp));
+            foreach ($arrQuizCp as $row) {
+                $sum = 0;
+                $ave = 0;
+                for ($i=0; $i < count($row) - 1; $i++) {
+                    $sum += $row[$i]->{'grade'};
+                }
+                $ave = round($sum/(count($row)-1),1);
+
+                $arrResCp[] = ["average" => $ave, "name" => $row['name'], "user" => $userCp->{'firstname'}." ".$userCp->{'lastname'}, "userId" => $userCp->{'id'}];
+            }
+            print json_encode(array($arrRes, $arrResCp));
+        }
+        else{
+            $msg = ["user" => $userCp->{'firstname'}." ".$userCp->{'lastname'}, "response" => 1];
+            print json_encode($msg);
+        }
+    }
+    else{
+        print json_encode($arrRes);
+    }
 }
 else{
-	print json_encode($arrRes);
+    $msg = ["user" => $user->{'firstname'}." ".$user->{'lastname'}, "response" => 1];
+    print json_encode($msg);
 }
-
-
-// print_r($arrRes);
 ?>

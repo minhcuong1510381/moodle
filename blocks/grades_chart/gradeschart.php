@@ -9,12 +9,14 @@ $courseId = $_GET['courseId'];
 
 require_login($courseId);
 
-$query = "SELECT u.id, u.firstname, u.lastname 
+$query = "SELECT u.id, u.firstname, u.lastname
           FROM {user} u
-          WHERE u.id <> 1 AND u.password <> 'restored' 
+          INNER JOIN {role_assignments} ra ON ra.userid = u.id
+          INNER JOIN {context} ct ON ct.id = ra.contextid 
+          WHERE u.suspended = 0 AND ct.contextlevel = 50 AND ct.instanceid = $courseId
           ORDER BY u.id ASC";
 
-$res = $DB->get_records_sql($query);
+ $res = $DB->get_records_sql($query);
 
 ?>
 <?php include('inc/header.php') ?>
@@ -79,9 +81,9 @@ $res = $DB->get_records_sql($query);
             $('#detail').unbind("click");
             $('.table-container').css("display", "none");
             $('.graph').css("display", "none");
+            $('#detail').css("display", "none");
             $('#mycanvas').remove();
             $('.chart-container').append('<canvas id="mycanvas"><canvas>');
-            $('#detail').css("display", "block");
             e.preventDefault();
             var frm = $('#myform');
 
@@ -91,8 +93,11 @@ $res = $DB->get_records_sql($query);
                     url: 'data.php',
                     data: frm.serializeArray(),
                     success: function(data){
-                        // console.log(data);
                         var obj = JSON.parse(data);
+                        if(obj.response == 1){
+                            alert("Sinh viên "+obj.user+" hiện chưa có điểm");
+                            return false;
+                        }
                         var vertex = [];
                         var score = [];
                         var ave = [];
@@ -139,6 +144,7 @@ $res = $DB->get_records_sql($query);
                         };
 
                         $(".chart-container").css("display","block");
+                        $("#detail").css("display", "block");
                         $(".detail").css("display","block");
 
                         var ctx = $("#mycanvas");
@@ -263,8 +269,12 @@ $res = $DB->get_records_sql($query);
                         url: 'data.php',
                         data: frm.serializeArray(),
                         success: function(data){
-                            
+
                             var obj = JSON.parse(data);
+                            if(obj.response == 1){
+                                alert("Sinh viên "+obj.user+" hiện chưa có điểm");
+                                return false;
+                            }
                             var vertex = [];
                             var score = [];
                             var ave = [];
