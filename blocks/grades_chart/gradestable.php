@@ -20,28 +20,6 @@ if ($isStudent == 2) {
     return false;
 }
 
-function groupArray($arr, $group, $preserveGroupKey = false, $preserveSubArrays = false)
-{
-    $temp = array();
-    foreach ($arr as $key => $value) {
-        $groupValue = $value[$group];
-        if (!$preserveGroupKey) {
-            unset($arr[$key][$group]);
-        }
-        if (!array_key_exists($groupValue, $temp)) {
-            $temp[$groupValue] = array();
-        }
-
-        if (!$preserveSubArrays) {
-            $data = count($arr[$key]) == 1 ? array_pop($arr[$key]) : $arr[$key];
-        } else {
-            $data = $arr[$key];
-        }
-        $temp[$groupValue][] = $data;
-    }
-    return $temp;
-}
-
 $query = "SELECT id, u.firstname, u.lastname 
           FROM {user} u
           WHERE u.id <> 1 AND u.password <> 'restored' 
@@ -52,6 +30,7 @@ $res = $DB->get_records_sql($query);
 $query1 = "SELECT *
 FROM {question_attempt_steps} qas
 INNER JOIN {question_attempts} qa ON qa.id = qas.questionattemptid
+INNER JOIN {question} q ON qa.questionid = q.id
 INNER JOIN {quiz_slots} qs ON qa.questionid = qs.questionid
 WHERE qas.state <> 'todo' AND qas.state <> 'complete' AND qas.userid = $studentId
 ORDER BY qas.id";
@@ -92,7 +71,7 @@ foreach ($qrArr as $q) {
 $result = groupArray($result, "idQuiz");
 
 //echo "<pre>";
-//print_r($result);die;
+//print_r($aQuiz);die;
 
 ?>
 <?php include('inc/header.php') ?>
@@ -107,7 +86,7 @@ $result = groupArray($result, "idQuiz");
             <thead>
             <tr>
                 <th></th>
-                <?php for ($i = 1; $i <= 10; $i++) { ?>
+                <?php for ($i = 1; $i <= countMaxArray($result); $i++) { ?>
                     <th>Câu <?php echo $i; ?></th>
                 <?php } ?>
             </tr>
@@ -120,15 +99,15 @@ $result = groupArray($result, "idQuiz");
                     <?php } else { ?>
                         <td><a href="<?php echo $CFG->wwwroot . '/mod/quiz/view.php?id=' . $name; ?>" target="_blank"><?php echo $items[0]['nameQuiz']; ?></a> </td>
                     <?php } ?>
-                    <?php for ($i = 0; $i < 10; $i++) { ?>
+                    <?php for ($i = 0; $i < countMaxArray($result); $i++) { ?>
                         <?php if (!is_array($items[0])) { ?>
                             <td>-</td>
                         <?php } else { ?>
                             <?php if ($items[$i]) { ?>
                                 <?php if ($items[$i]['state'] == "gradedright") { ?>
-                                    <td><a href="javascript:void(0);" data-toggle="tooltip" title="<?php echo '***Câu hỏi là: '.'&#013;'.$items[$i]['questionsummary'].'***Câu trả lời của bạn: '. $items[$i]['responsesummary'].'&#013;'.'***Đáp án: '. $items[$i]['rightanswer']; ?>"><i class="fa fa-check"></i></a></td>
+                                    <td><a href="javascript:void(0);" data-toggle="tooltip" data-html="true" data-placement="right" title="<?php echo '***Câu hỏi là: '.'&#013;'.htmlentities($items[$i]['questionsummary']).'&#013;'.'***Câu trả lời của bạn: '. htmlentities($items[$i]['responsesummary']).'&#013;'.'***Đáp án: '. htmlentities($items[$i]['rightanswer']); ?>"><i class="fa fa-check"></i></a></td>
                                 <?php } else { ?>
-                                    <td><a href="javascript:void(0);" data-toggle="tooltip" title="<?php echo '***Câu hỏi là: '.'&#013;'.$items[$i]['questionsummary'].'***Câu trả lời của bạn: '. $items[$i]['responsesummary'].'&#013;'.'***Đáp án: '. $items[$i]['rightanswer']; ?>"><i class="fa fa-times"></i></a></td>
+                                    <td><a href="javascript:void(0);" data-toggle="tooltip" data-html="true" data-placement="right" title="<?php echo '***Câu hỏi là: '.'&#013;'.htmlentities($items[$i]['questionsummary']).'&#013;'.'***Câu trả lời của bạn: '. htmlentities($items[$i]['responsesummary']).'&#013;'.'***Đáp án: '. htmlentities($items[$i]['rightanswer']); ?>"><i class="fa fa-times"></i></a></td>
                                 <?php } ?>
                             <?php } else { ?>
                                 <td>-</td>
@@ -139,15 +118,19 @@ $result = groupArray($result, "idQuiz");
             <?php } ?>
             </tbody>
         </table>
+        <div class="redirect-course" style="margin: 0 auto; width: 500px; text-align: center">
+            <a href="<?php echo $CFG->wwwroot . '/course/view.php?id=' . $courseId; ?>"><button type="button" class="btn btn-primary">Trở về khóa học</button></a>
+        </div>
     </div>
 </div>
 <script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/Chart.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+    // $(function () {
+    //     $('[data-toggle="tooltip"]').tooltip()
+    // })
 </script>
 
 <?php include('inc/footer.php') ?>

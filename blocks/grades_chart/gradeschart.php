@@ -35,7 +35,7 @@ $res = $DB->get_records_sql($query);
             <div class="title-gradeschart" style="margin: 0 auto; width: 500px; text-align: center">
                 <h3>Biểu đồ đánh giá năng lực sinh viên</h3>
             </div>
-            <form id="myform">
+            <form id="myform" style="margin-top: 20px;">
                 <input type="hidden" id="courseId" name="courseId" value="<?php echo $courseId; ?>">
                 <div class="alert alert-danger" id="alert" role="alert"
                      style="margin: 0 auto; width: 500px; display: none;">
@@ -76,10 +76,10 @@ $res = $DB->get_records_sql($query);
         </div>
         <div class="table-container" style="display: none; padding-top: 20px; margin: 0 auto; width: 500px;">
         </div>
-        <div class="detail" style="display:none; margin: 0 auto; width: 100px; padding-top: 10px;">
+        <div class="detail" style="display:none; margin: 0 auto; width: 100px; padding-top: 10px; text-align: center">
             <button type="button" id="detail" class="btn btn-primary">Chi tiết</button>
         </div>
-        <div class="graph" style="display:none; margin: 0 auto; width: 100px;">
+        <div class="graph" style="display:none; margin: 0 auto; width: 100px; text-align: center">
             <button type="button" id="graph" class="btn btn-success">Đồ thị</button>
         </div>
     </div>
