@@ -71,7 +71,7 @@ foreach ($qrArr as $q) {
 $result = groupArray($result, "idQuiz");
 
 //echo "<pre>";
-//print_r($aQuiz);die;
+//print_r($result);die;
 
 ?>
 <?php include('inc/header.php') ?>

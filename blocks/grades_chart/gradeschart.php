@@ -15,7 +15,7 @@ $roles = get_user_roles($context, $USER->id);
 
 $isStudent = current(get_user_roles($context, $USER->id))->shortname == 'student' ? 1 : 2;
 
-if($isStudent == 1){
+if ($isStudent == 1) {
     return false;
 }
 
@@ -85,6 +85,7 @@ $res = $DB->get_records_sql($query);
     </div>
 
     <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/Chart.min.js"></script>
     <!-- <script src="js/style.js"></script> -->
