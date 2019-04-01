@@ -10,7 +10,7 @@ class block_grades_chart extends block_base
 {
     public function init()
     {
-        $this->title = "Analytics Chart";
+        $this->title = "Biểu đồ phân tích";
     }
     // The PHP tag and the curly bracket for the class definition
     // will only be closed after there is another function added in the next section.
@@ -38,11 +38,11 @@ class block_grades_chart extends block_base
         $this->content = new stdClass;
 
         if ($isStudent == 1) {
-            $this->content->text = '<li><a href="' . $tableURL . '" target="_blank">Grades Table</a></li>';
+            $this->content->text = '<li><a href="' . $tableURL . '" target="_blank">Bảng xem lại khóa học</a></li>';
         } else {
-            $this->content->text = '<li><a href="' . $chartURL . '" target="_blank">Radar Chart</a></li>';
+            $this->content->text = '<li><a href="' . $chartURL . '" target="_blank">Biểu đồ năng lực sinh viên</a></li>';
             // $this->content->text  .= '<li><a href="'.$tableURL.'" target="_blank">Grades Table</a></li>';
-            $this->content->text .= '<li><a href="' . $reviewCourseURL . '" target="_blank">Bar Chart</a></li>';
+            $this->content->text .= '<li><a href="' . $reviewCourseURL . '" target="_blank">Biểu đồ thống kê</a></li>';
         }
 
         $this->content->footer = '<hr/>';
