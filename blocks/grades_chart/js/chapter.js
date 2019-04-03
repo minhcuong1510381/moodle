@@ -1,5 +1,7 @@
 $(document).ready(function () {
     $('#form-chapter').on('submit', function (e) {
+        $('#chapterCanvas').remove();
+        $('.chart-container').append('<canvas id="chapterCanvas"><canvas>');
         e.preventDefault();
         var frm = $('#form-chapter');
         $.ajax({

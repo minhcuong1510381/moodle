@@ -43,8 +43,7 @@ class block_grades_chart extends block_base
             $this->content->text = '<li><a href="' . $tableURL . '" target="_blank">Bảng xem lại khóa học</a></li>';
         } else {
             $this->content->text = '<li><a href="' . $chartURL . '" target="_blank">Biểu đồ năng lực sinh viên</a></li>';
-            $this->content->text .= '<li><a href="' . $reviewCourseURL . '" target="_blank">Biểu đồ thống kê theo khóa</a></li>';
-            $this->content->text .= '<li><a href="' . $reviewChapterURL . '" target="_blank">Biểu đồ thống kê theo chương</a></li>';
+            $this->content->text .= '<li><a href="' . $reviewChapterURL . '" target="_blank">Biểu đồ thống kê theo năm học</a></li>';
             $this->content->text .= '<li><a href="' . $topStudentURL . '" target="_blank">Top 10 sinh viên xuất sắc</a></li>';
         }
 

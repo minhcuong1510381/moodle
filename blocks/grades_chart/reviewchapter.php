@@ -24,7 +24,7 @@ if ($isStudent == 1) {
     <div class="container" style="height: 700px;">
         <div class="header">
             <div class="title-gradeschart" style="margin: 0 auto; width: 500px; text-align: center">
-                <h3>Biểu đồ thống kê điểm số sinh viên theo chương</h3>
+                <h3>Biểu đồ thống kê điểm số sinh viên theo từng năm học</h3>
             </div>
         </div>
         <div class="content">
@@ -33,8 +33,8 @@ if ($isStudent == 1) {
                 <div class="form-group choose-year-chapter" style="margin: 0 auto; width: 500px;" id="year-chapter">
                     <label>Chọn năm để phân tích:</label>
                     <select class="form-control" id="choose-year-chapter" name="yearChapter">
-                        <?php for ($i = date("Y") - 10; $i <= date("Y"); $i++) { ?>
-                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                        <?php for ($i = date("Y") - 10; $i < date("Y"); $i++) { ?>
+                            <option value="<?php echo($i + 1); ?>"><?php echo $i . "-" . ($i + 1); ?></option>
                         <?php } ?>
                     </select>
                 </div>
