@@ -70,9 +70,6 @@ foreach ($qrArr as $q) {
 
 $result = groupArray($result, "idQuiz");
 
-//echo "<pre>";
-//print_r($result);die;
-
 ?>
 <?php include('inc/header.php') ?>
 <div class="container">
@@ -95,9 +92,12 @@ $result = groupArray($result, "idQuiz");
             <?php foreach ($result as $name => $items) { ?>
                 <tr>
                     <?php if (!is_array($items[0])) { ?>
-                        <td><a href="<?php echo $CFG->wwwroot . '/mod/quiz/view.php?id=' . $name; ?>" target="_blank"><span><?php echo $items[0]; ?></span><i class="fa fa-exclamation-triangle" style="color: orange"></i></a></td>
+                        <td><a href="<?php echo $CFG->wwwroot . '/mod/quiz/view.php?id=' . $name; ?>"
+                               target="_blank"><span><?php echo $items[0]; ?></span><i
+                                        class="fa fa-exclamation-triangle" style="color: orange"></i></a></td>
                     <?php } else { ?>
-                        <td><a href="<?php echo $CFG->wwwroot . '/mod/quiz/view.php?id=' . $name; ?>" target="_blank"><?php echo $items[0]['nameQuiz']; ?></a> </td>
+                        <td><a href="<?php echo $CFG->wwwroot . '/mod/quiz/view.php?id=' . $name; ?>"
+                               target="_blank"><?php echo $items[0]['nameQuiz']; ?></a></td>
                     <?php } ?>
                     <?php for ($i = 0; $i < countMaxArray($result); $i++) { ?>
                         <?php if (!is_array($items[0])) { ?>
@@ -105,9 +105,15 @@ $result = groupArray($result, "idQuiz");
                         <?php } else { ?>
                             <?php if ($items[$i]) { ?>
                                 <?php if ($items[$i]['state'] == "gradedright") { ?>
-                                    <td><a href="javascript:void(0);" data-toggle="tooltip" data-html="true" data-placement="right" title="<?php echo '***Câu hỏi là: '.'&#013;'.htmlentities($items[$i]['questionsummary']).'&#013;'.'***Câu trả lời của bạn: '. htmlentities($items[$i]['responsesummary']).'&#013;'.'***Đáp án: '. htmlentities($items[$i]['rightanswer']); ?>"><i class="fa fa-check"></i></a></td>
+                                    <td><a href="javascript:void(0);" data-toggle="tooltip" data-html="true"
+                                           data-placement="right"
+                                           title="<?php echo '***Câu hỏi là: ' . '&#013;' . htmlentities($items[$i]['questionsummary']) . '&#013;' . '***Câu trả lời của bạn: ' . htmlentities($items[$i]['responsesummary']) . '&#013;' . '***Đáp án: ' . htmlentities($items[$i]['rightanswer']); ?>"><i
+                                                    class="fa fa-check"></i></a></td>
                                 <?php } else { ?>
-                                    <td><a href="javascript:void(0);" data-toggle="tooltip" data-html="true" data-placement="right" title="<?php echo '***Câu hỏi là: '.'&#013;'.htmlentities($items[$i]['questionsummary']).'&#013;'.'***Câu trả lời của bạn: '. htmlentities($items[$i]['responsesummary']).'&#013;'.'***Đáp án: '. htmlentities($items[$i]['rightanswer']); ?>"><i class="fa fa-times"></i></a></td>
+                                    <td><a href="javascript:void(0);" data-toggle="tooltip" data-html="true"
+                                           data-placement="right"
+                                           title="<?php echo '***Câu hỏi là: ' . '&#013;' . htmlentities($items[$i]['questionsummary']) . '&#013;' . '***Câu trả lời của bạn: ' . htmlentities($items[$i]['responsesummary']) . '&#013;' . '***Đáp án: ' . htmlentities($items[$i]['rightanswer']); ?>"><i
+                                                    class="fa fa-times"></i></a></td>
                                 <?php } ?>
                             <?php } else { ?>
                                 <td>-</td>
@@ -119,18 +125,10 @@ $result = groupArray($result, "idQuiz");
             </tbody>
         </table>
         <div class="redirect-course" style="margin: 0 auto; width: 500px; text-align: center">
-            <a href="<?php echo $CFG->wwwroot . '/course/view.php?id=' . $courseId; ?>"><button type="button" class="btn btn-primary">Trở về khóa học</button></a>
+            <a href="<?php echo $CFG->wwwroot . '/course/view.php?id=' . $courseId; ?>">
+                <button type="button" class="btn btn-primary">Trở về khóa học</button>
+            </a>
         </div>
     </div>
 </div>
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/Chart.min.js"></script>
-<script>
-    // $(function () {
-    //     $('[data-toggle="tooltip"]').tooltip()
-    // })
-</script>
-
 <?php include('inc/footer.php') ?>

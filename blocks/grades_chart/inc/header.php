@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Radar Chart</title>
+    <title>Biểu đồ phân tích</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- <link href="./css/all.css" rel="stylesheet"> -->
     <link rel="shortcut icon" href="img/favicon.ico">

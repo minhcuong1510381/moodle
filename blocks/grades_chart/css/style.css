@@ -1,21 +1,25 @@
-.title-gradeschart{
+.title-gradeschart {
     padding-top: 10px;
     margin: 0 auto;
     width: 500px;
     height: auto;
 }
-th,td {
- text-align: center;
+
+th, td {
+    text-align: center;
 }
-.fa-check{
-	color: blue;
+
+.fa-check {
+    color: blue;
 }
-.fa-times{
-	color: red;
+
+.fa-times {
+    color: red;
 }
+
 .chart-container {
-	margin: 0 auto;
-	padding-top: 30px;
-    width: 640px;
+    margin: 0 auto;
+    padding-top: 30px;
+    width: 800px;
     height: auto;
 }
