@@ -84,3 +84,5 @@ $res = $DB->get_records_sql($query);
         </div>
     </div>
 <?php include('inc/footer.php') ?>
+</body>
+</html>

@@ -52,3 +52,5 @@ if ($isStudent == 1) {
     </div>
 
 <?php include('inc/footer.php') ?>
+</body>
+</html>

@@ -2,6 +2,7 @@ $(document).ready(function () {
     $('#form-chapter').on('submit', function (e) {
         $('#chapterCanvas').remove();
         $('.chart-container').append('<canvas id="chapterCanvas"><canvas>');
+        $('.comment').empty();
         e.preventDefault();
         var frm = $('#form-chapter');
         $.ajax({
@@ -18,13 +19,20 @@ $(document).ready(function () {
                 var vertex = [];
                 var data = [];
                 var ave = [];
+                var color = [];
 
                 for (var i in obj) {
                     vertex.push(obj[i].name);
                     data.push(obj[i].per_student_grade_gt_5);
                     ave.push(50);
+                    if(obj[i].per_student_grade_gt_5 >= 50){
+                        color.push('#2ECC71');
+                    }
+                    else{
+                        color.push('#F8C471');
+                    }
                 }
-                console.log(vertex);
+                console.log(color);
 
                 var options = {
                     scales: {
@@ -51,19 +59,19 @@ $(document).ready(function () {
                     labels: vertex,
                     datasets: [
                         {
-                            label: "Phần trăm sinh viên có ĐTB lớn hơn hoặc bằng 5",
-                            backgroundColor: 'rgba(54, 162, 235, 0.8)',
-                            borderColor: 'rgb(54, 162, 235)',
-                            data: data,
-                            fill: true,
-                        },
-                        {
                             label: "Trung bình",
+                            backgroundColor: 'rgba(255, 0, 0, 0.2)',
                             borderColor: 'rgb(255, 0, 0)',
                             borderWidth: '1',
                             type: "line",
                             data: ave,
                             fill: false,
+                        },
+                        {
+                            label: "Phần trăm sinh viên có ĐTB lớn hơn hoặc bằng 5",
+                            backgroundColor: color,
+                            borderColor: color,
+                            data: data,
                         }
                     ]
                 };

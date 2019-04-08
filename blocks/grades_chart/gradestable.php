@@ -132,3 +132,5 @@ $result = groupArray($result, "idQuiz");
     </div>
 </div>
 <?php include('inc/footer.php') ?>
+</body>
+</html>
