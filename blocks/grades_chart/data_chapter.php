@@ -5,8 +5,8 @@ global $DB, $USER, $CFG;
 require("lib.php");
 
 $courseId = $_POST['courseId'];
-$yearReview = $_POST['yearChapter'];
-$preYear = $yearReview - 1;
+//$yearReview = $_POST['yearChapter'];
+//$preYear = $yearReview - 1;
 
 $query = "SELECT u.id, u.firstname, u.lastname
           FROM {user} u
@@ -20,7 +20,7 @@ $res = $DB->get_records_sql($query);
 $query1 = "SELECT name,
  			( SELECT COUNT(*) FROM {quiz_grades} qg WHERE qg.quiz = q.id AND qg.grade >= 5) AS grade_greater_than_5
  			FROM {quiz} q INNER JOIN {quiz_grades} qg ON qg.quiz = q.id  
-			WHERE q.course = $courseId AND ((MONTH(FROM_UNIXTIME(qg.timemodified)) >= 8 AND YEAR(FROM_UNIXTIME(qg.timemodified)) = $preYear) OR  (MONTH(FROM_UNIXTIME(qg.timemodified)) <= 8 AND YEAR(FROM_UNIXTIME(qg.timemodified)) = $yearReview))
+			WHERE q.course = $courseId
  			GROUP BY q.id ";
 
 $quiz = $DB->get_records_sql($query1);

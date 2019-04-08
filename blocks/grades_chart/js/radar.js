@@ -137,7 +137,7 @@ $(document).ready(function () {
                             trBody1.appendChild(tdBody3);
 
                             tdBody1.innerHTML = obj[i].name;
-                            tdBody2.innerHTML = obj[i].average;
+                            tdBody2.innerHTML = parseFloat(obj[i].average).toFixed(1);
                             if (tdBody2.innerHTML >= 5) {
                                 tdBody3.innerHTML = '<i class="fa fa-check"></i>';
                             } else {

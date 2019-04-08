@@ -35,7 +35,7 @@ class block_grades_chart extends block_base
         $tableURL = new moodle_url('/blocks/grades_chart/gradestable.php', array('courseId' => $courseId));
         $reviewCourseURL = new moodle_url('/blocks/grades_chart/reviewcourse.php', array('courseId' => $courseId));
         $reviewChapterURL = new moodle_url('/blocks/grades_chart/reviewchapter.php', array('courseId' => $courseId));
-        $topStudentURL = new moodle_url('/blocks/grades_chart/topstudent.php', array('courseId' => $courseId));
+        $topStudentURL = new moodle_url('/blocks/grades_chart/avestudent.php', array('courseId' => $courseId));
 
         $this->content = new stdClass;
 
@@ -43,8 +43,8 @@ class block_grades_chart extends block_base
             $this->content->text = '<li><a href="' . $tableURL . '" target="_blank">Bảng xem lại khóa học</a></li>';
         } else {
             $this->content->text = '<li><a href="' . $chartURL . '" target="_blank">Biểu đồ năng lực sinh viên</a></li>';
-            $this->content->text .= '<li><a href="' . $reviewChapterURL . '" target="_blank">Biểu đồ thống kê theo năm học</a></li>';
-            $this->content->text .= '<li><a href="' . $topStudentURL . '" target="_blank">Top 10 sinh viên xuất sắc</a></li>';
+            $this->content->text .= '<li><a href="' . $reviewChapterURL . '" target="_blank">Biểu đồ phần trăm sinh viên trên trung bình của từng bài kiểm tra</a></li>';
+            $this->content->text .= '<li><a href="' . $topStudentURL . '" target="_blank">Tổng kết điểm trung bình của sinh viên</a></li>';
         }
 
         $this->content->footer = '<hr/>';
